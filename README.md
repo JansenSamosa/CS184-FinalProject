@@ -1,6 +1,7 @@
-some reference papers
+# notion page (used for project proposal and also progress tracker)
+https://storm-roast-15d.notion.site/Glowing-Dust-Particle-Simulation-1cb0bbcaaed480278e38edfbbd7327a2?pvs=4
 
-
+## some reference papers
 Modeling coarse and giant desert dust particles: https://acp.copernicus.org/articles/22/12727/2022/
 
 
