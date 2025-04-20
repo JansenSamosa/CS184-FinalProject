@@ -1007,6 +1007,18 @@ public partial class VLight : MonoBehaviour
         if (!VLightInterleavedSampling.renderingInterleaved)
         {
             UpdateSettings();
+            //added start
+            //Debug.Log("Rendering from: " + Camera.current.name);
+            if (Camera.current == null) {
+                Debug.LogWarning("[V-Light] Camera.current is null. Skipping OnWillRenderObject for this frame.");
+                return;
+            }
+
+/*            if (Camera.current.name == "SceneCamera")
+            {
+                return;
+            }*/
+            //added end 
             UpdateViewMatrices(Camera.current);
             UpdateLightMatrices();
             if(!_renderShadowMapInUpdate)
