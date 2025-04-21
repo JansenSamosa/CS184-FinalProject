@@ -1,43 +1,44 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public struct Particle
 {
     public Transform transform;
     public Vector3 velocity;
+    
+    public bool settled;
 
     // constructor
     public Particle(Transform transform, Vector3 velocity)
     {
         this.transform = transform;
         this.velocity = velocity;
+        this.settled = false;
     }
 }
 
 public class ParticleSystem : MonoBehaviour
 {       
-    [SerializeField]
-    private GameObject ParticlePrefab;
+    [SerializeField] bool physicallyAccurate = false;
 
-    [SerializeField]
-    private Transform boundingBox;
-    private Vector3 boundMin;
-    private Vector3 boundMax;
+    [SerializeField] GameObject ParticlePrefab;
+    [SerializeField] Transform boundingBox;
+    [SerializeField] float scaleMin = 1;
+    [SerializeField] float scaleMax = 1;
 
-    [SerializeField] 
-    private float scaleMin = 1;
-    [SerializeField] 
-    private float scaleMax = 1;
+    [SerializeField] Vector3 addedForce = new Vector3(0, -0.01f, 0);
+    [SerializeField] float drag = 0.01f;
     
-    [SerializeField]
-    private Vector3 addedForce = new Vector3(0, -0.01f, 0);
+    [SerializeField] int initialSpawnCount = 100;
+    [SerializeField] float particleDensity = 2650;
 
-    [SerializeField]
-    private int initialSpawnCount = 100;
-
-    private List<Particle> activeParticles = new List<Particle>();   
+    [HideInInspector] public List<Particle> activeParticles = new List<Particle>();   
+    Vector3 boundMin;
+    Vector3 boundMax;
 
     void Start() {
         boundMin = boundingBox.position - boundingBox.localScale/2;
@@ -52,12 +53,28 @@ public class ParticleSystem : MonoBehaviour
         // UPDATE PARTICLES
         for (int i = 0; i < activeParticles.Count; i++) {
             Particle p = activeParticles[i];
+            if (p.settled) continue;
+            
+            if (physicallyAccurate) {
+                float d = p.transform.localScale.x ;      
+                float v_s = ((particleDensity - 1.225f) * (9.81f) * (d * d)) / (18.0f * 1.81e-5f);
+                p.velocity.y = -v_s;
+            } else {
+                // apply gravity
+                p.velocity += addedForce * Time.deltaTime;
 
-            // apply velocity to each particles position
-            p.transform.position += p.velocity * Time.deltaTime;  
-        
-            // apply force
-            p.velocity += addedForce * Time.deltaTime;
+                // apply drag
+                p.velocity -= (p.velocity * drag * Time.deltaTime);
+            }
+            Vector3 nextPos = p.transform.position + p.velocity * Time.deltaTime;
+            if (Physics.Linecast(p.transform.position, nextPos, out RaycastHit hit)) {
+                p.transform.position = hit.point;      // snap to contact
+                p.velocity = Vector3.zero;   // zero out so they “settle”
+                p.settled = true;
+            }
+            else {
+                p.transform.position = nextPos;
+            }
 
             activeParticles[i] = p;
         }
