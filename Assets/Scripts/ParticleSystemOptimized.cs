@@ -22,31 +22,34 @@ public struct ParticleData
 
 public class ParticleSystemOptimized : MonoBehaviour
 {   
-
+    [Header("Particle Rendering Parameters")]
     public Material particleMaterial;
     public Mesh particleMesh;
     public bool renderAsBillboardTexture = true;
 
+    [Header("Particle Emission Parameters")]
     public Transform boundingBox;
-    public float scaleMin = 1;
-    public float scaleMax = 1;
-
-    public float maxVelocity = 1;
-
-    public Vector3 addedForce = new Vector3(0, -0.01f, 0);
-    public float drag = 0.01f;
-    
     public int spawnCount = 100;
-    public float particleActiveLifetime = 5;
-
-    public List<ParticleData> activeParticles = new List<ParticleData>();   
-    public List<ParticleData> settledParticles = new List<ParticleData>();
-    private List<Matrix4x4> settledParticlesTransformations = new List<Matrix4x4>();
 
     private Vector3 boundMin;
     private Vector3 boundMax;
+    
+    [Header("Particle Attributes")]
+    public float scaleMin = 1;
+    public float scaleMax = 1;
+    public float particleActiveLifetime = 5;
+    public float maxVelocity = 1;
 
+    [Header("External Forces")]
+    public float drag = 0.01f;
+    public Vector3 addedForce = new Vector3(0, -0.01f, 0);
     public WindField windField;
+
+    [Header("Particles lists (do not touch—for debugging purposes only)")]
+    [SerializeField] List<ParticleData> activeParticles = new List<ParticleData>();   
+    [SerializeField] List<ParticleData> settledParticles = new List<ParticleData>();
+    
+    private List<Matrix4x4> settledParticlesTransformations = new List<Matrix4x4>();
 
     void Start() {
         // set the particle emission bounds
