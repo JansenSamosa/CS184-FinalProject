@@ -1090,7 +1090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &782509201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2205,7 +2205,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -2257,7 +2257,7 @@ MonoBehaviour:
   quadraticAttenuation: 100
   aspect: 1
   slices: 122
-  colorTint: {r: 1, g: 1, b: 1, a: 1}
+  colorTint: {r: 0.8584906, g: 0.58215225, b: 0.17412782, a: 1}
   noiseSpeed: {x: 0, y: 0, z: 0}
   useDithering: 0
   ditherAmount: 0
@@ -2408,7 +2408,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729240511}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -2461,7 +2461,7 @@ Transform:
   m_GameObject: {fileID: 1729240511}
   serializedVersion: 2
   m_LocalRotation: {x: 0.6503007, y: 0.55380565, z: 0.31625125, w: 0.4127875}
-  m_LocalPosition: {x: 2.090566, y: 0.87700444, z: 3.8810878}
+  m_LocalPosition: {x: 2.12, y: 1.04, z: 3.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

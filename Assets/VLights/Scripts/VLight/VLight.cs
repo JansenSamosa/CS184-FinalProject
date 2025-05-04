@@ -1003,31 +1003,69 @@ public partial class VLight : MonoBehaviour
 
     private bool _queueRenderShadowMap = false;
 
+    //    public void OnWillRenderObject()
+    //    {
+    //        VLightInterleavedSampling.renderCount++;
+
+    //        if (!VLightInterleavedSampling.renderingInterleaved)
+    //        {
+    //            UpdateSettings();
+    //            //added start
+    //            Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
+    //            //Debug.Log("Rendering from: " + Camera.current.name);
+    //            if (camToUse == null) {
+    //                Debug.LogWarning("[V-Light] Camera.current is null. Skipping OnWillRenderObject for this frame.");
+    //                return;
+    //            }
+
+    ///*            if (Camera.current.name == "SceneCamera")
+    //            {
+    //                return;
+    //            }*/
+    //            //added end 
+
+    //            UpdateViewMatrices(camToUse);
+    //            //UpdateViewMatrices(Camera.current);
+    //            UpdateLightMatrices();
+    //            if(!_renderShadowMapInUpdate)
+    //            {
+    //                RenderShadowMap();
+    //            }
+
+    //            _queueRenderShadowMap = true;
+
+    //            MeshRender.GetPropertyBlock(PropertyBlock);
+    //            SetShaderPropertiesBlock(PropertyBlock);
+    //            MeshRender.SetPropertyBlock(PropertyBlock);
+    //        }
+
+    //        if (useCurves)
+    //        {
+    //            if (Application.isEditor)
+    //            {
+    //                UpdateFalloffCurve();
+    //            }
+    //        }
+    //    }
     public void OnWillRenderObject()
     {
         VLightInterleavedSampling.renderCount++;
 
         if (!VLightInterleavedSampling.renderingInterleaved)
         {
-            UpdateSettings();
-            //added start
-            Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
-            //Debug.Log("Rendering from: " + Camera.current.name);
-            if (camToUse == null) {
-                Debug.LogWarning("[V-Light] Camera.current is null. Skipping OnWillRenderObject for this frame.");
+            Camera camToUse = targetCamera;
+
+            if (camToUse == null || camToUse.name == "SceneCamera")
+            {
+                Debug.LogWarning("[V-Light] Skipping rendering for Scene Camera.");
                 return;
             }
 
-/*            if (Camera.current.name == "SceneCamera")
-            {
-                return;
-            }*/
-            //added end 
-
+            UpdateSettings();
             UpdateViewMatrices(camToUse);
-            //UpdateViewMatrices(Camera.current);
             UpdateLightMatrices();
-            if(!_renderShadowMapInUpdate)
+
+            if (!_renderShadowMapInUpdate)
             {
                 RenderShadowMap();
             }
@@ -1039,14 +1077,12 @@ public partial class VLight : MonoBehaviour
             MeshRender.SetPropertyBlock(PropertyBlock);
         }
 
-        if (useCurves)
+        if (useCurves && Application.isEditor)
         {
-            if (Application.isEditor)
-            {
-                UpdateFalloffCurve();
-            }
+            UpdateFalloffCurve();
         }
     }
+
 
     void Update()
     {
@@ -1192,7 +1228,24 @@ public partial class VLight : MonoBehaviour
 
     void UpdateLightMatrices()
     {
+        Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
+        //for debugging the camera position 
+        //Debug.Log("[V-Light] _localToWorldMatrix:\n" + _localToWorldMatrix);
+        //Debug.Log("[V-Light] _worldToCamera:\n" + _worldToCamera);
+        //Debug.Log("[V-Light] _viewWorldToCameraMatrixCached:\n" + _viewWorldToCameraMatrixCached);
+        //Debug.Log("[V-Light] _viewCameraToWorldMatrixCached:\n" + _viewCameraToWorldMatrixCached);
+        //Debug.Log("[V-Light] _viewWorldLight:\n" + _viewWorldLight);
+        //Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
+        //Debug.Log("[V-Light] camToUse name: " + camToUse.name);
+        //Debug.Log("[V-Light] Camera position: " + camToUse.transform.position + ", Rotation: " + camToUse.transform.rotation.eulerAngles);
+        Debug.Log("[V-Light] camToUse (UpdateLightMatrices): " + camToUse.name);
+        Debug.Log("[V-Light] camToUse Pos: " + camToUse.transform.position + ", Rot: " + camToUse.transform.rotation.eulerAngles);
+        //debugging end 
+
         _localToWorldMatrix = CachedTransform.localToWorldMatrix;
+
+        //_worldToCamera = camToUse.worldToCameraMatrix;
+
         _worldToCamera = cam.worldToCameraMatrix;
 
         switch (lightType)
@@ -1212,15 +1265,43 @@ public partial class VLight : MonoBehaviour
                 break;
         }
 
-        _angle += noiseSpeed * Time.deltaTime;
+        //_angle += noiseSpeed * Time.deltaTime;
 
         RebuildMesh();
     }
 
     void UpdateViewMatrices(Camera targetCamera)
     {
-        _viewWorldToCameraMatrixCached = targetCamera.worldToCameraMatrix;
-        _viewCameraToWorldMatrixCached = targetCamera.cameraToWorldMatrix;
+        //for debuging purpose 
+        //start debugging code
+        //#if UNITY_EDITOR
+        //        Debug.Log("[V-Light] UpdateViewMatrices called");
+        //        if (targetCamera == null)
+        //        {
+        //            Debug.LogWarning("[V-Light] targetCamera is NULL!");
+        //        }
+        //        else
+        //        {
+        //            Debug.Log($"[V-Light] Using camera: {targetCamera.name}, isSceneCamera: {targetCamera.name == "SceneCamera"}");
+        //            Debug.Log($"[V-Light] Camera Position: {targetCamera.transform.position}, Rotation: {targetCamera.transform.rotation.eulerAngles}");
+        //        }
+
+        //        if (Camera.current != null)
+        //        {
+        //            Debug.Log($"[V-Light] Camera.current: {Camera.current.name}, isSceneCamera: {Camera.current.name == "SceneCamera"}");
+        //        }
+        //        else
+        //        {
+        //            Debug.LogWarning("[V-Light] Camera.current is NULL!");
+        //        }
+        //#endif
+        Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
+        if (camToUse == null) return;
+
+        Debug.Log("[V-Light] camToUse (UpdateViewMatrices): " + camToUse.name);
+        //end debugging code 
+        _viewWorldToCameraMatrixCached = camToUse.worldToCameraMatrix;
+        _viewCameraToWorldMatrixCached = camToUse.cameraToWorldMatrix;
 
         switch (lightType)
         {
@@ -1241,6 +1322,27 @@ public partial class VLight : MonoBehaviour
 
     void RebuildMesh()
     {
+        //debugging purpose 
+        //start debugging
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+        Debug.Log("[V-Light] RebuildMesh called.");
+
+        if (mesh == null)
+        {
+            Debug.LogWarning("[V-Light] mesh is null.");
+            return;
+        }
+
+        // Check bounds
+        Bounds bounds = mesh.bounds;
+        Debug.Log("[V-Light] Mesh bounds: Center=" + bounds.center + ", Size=" + bounds.size);
+
+        // Print vertex count
+        Debug.Log("[V-Light] Vertex count: " + mesh.vertexCount);
+
+        // Print slice count (if used)
+        Debug.Log("[V-Light] Slices setting: " + slices);
+        //end debugging 
         CalculateMinMax(out _minBounds, out _maxBounds, _cameraHasBeenUpdated);
 
         // Build the mesh if we have modified the parameters
