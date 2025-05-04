@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/room with window light.unity
     guid: 04952b62045fa498ea2de5a795061149
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/room with window light jansen2 branch.unity
     guid: ee4381afac4d71d4d8511a5097f29697
+  - enabled: 1
+    path: Assets/Scenes/FinalMainScene.unity
+    guid: e789b9948ffa76d4fa0ed2f5655f7775
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
