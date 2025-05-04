@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
@@ -22,23 +23,24 @@ public struct Particle
 }
 
 public class ParticleSystem : MonoBehaviour
-{       
-    [SerializeField] bool physicallyAccurate = false;
-
+{           
     [SerializeField] GameObject ParticlePrefab;
     [SerializeField] Transform boundingBox;
     [SerializeField] float scaleMin = 1;
     [SerializeField] float scaleMax = 1;
 
+    [SerializeField] float maxVelocity = 1;
+
     [SerializeField] Vector3 addedForce = new Vector3(0, -0.01f, 0);
     [SerializeField] float drag = 0.01f;
     
     [SerializeField] int initialSpawnCount = 100;
-    [SerializeField] float particleDensity = 2650;
 
     [HideInInspector] public List<Particle> activeParticles = new List<Particle>();   
-    Vector3 boundMin;
-    Vector3 boundMax;
+    private Vector3 boundMin;
+    private Vector3 boundMax;
+
+    [SerializeField] WindField windField;
 
     void Start() {
         boundMin = boundingBox.position - boundingBox.localScale/2;
@@ -55,17 +57,20 @@ public class ParticleSystem : MonoBehaviour
             Particle p = activeParticles[i];
             if (p.settled) continue;
             
-            if (physicallyAccurate) {
-                float d = p.transform.localScale.x ;      
-                float v_s = ((particleDensity - 1.225f) * (9.81f) * (d * d)) / (18.0f * 1.81e-5f);
-                p.velocity.y = -v_s;
-            } else {
-                // apply gravity
-                p.velocity += addedForce * Time.deltaTime;
-
-                // apply drag
-                p.velocity -= (p.velocity * drag * Time.deltaTime);
+            // apply gravity
+            p.velocity += addedForce * Time.deltaTime;
+            
+            // apply wind
+            if (windField) {
+                Vector3 curWind = windField.SampleWind(p.transform.position);
+                p.velocity += curWind * Time.deltaTime;
             }
+
+            p.velocity = Vector3.ClampMagnitude(p.velocity, maxVelocity);
+
+            // apply drag
+            p.velocity -= (p.velocity * drag * Time.deltaTime);
+            
             Vector3 nextPos = p.transform.position + p.velocity * Time.deltaTime;
             if (Physics.Linecast(p.transform.position, nextPos, out RaycastHit hit)) {
                 p.transform.position = hit.point;      // snap to contact
@@ -75,6 +80,7 @@ public class ParticleSystem : MonoBehaviour
             else {
                 p.transform.position = nextPos;
             }
+
 
             activeParticles[i] = p;
         }
@@ -96,16 +102,16 @@ public class ParticleSystem : MonoBehaviour
         
     private void SpawnParticleRandomly() {
         Vector3 randomPos = new Vector3(
-            Random.Range(boundMin.x, boundMax.x),
-            Random.Range(boundMin.y, boundMax.y),
-            Random.Range(boundMin.z, boundMax.z)
+            UnityEngine.Random.Range(boundMin.x, boundMax.x),
+            UnityEngine.Random.Range(boundMin.y, boundMax.y),
+            UnityEngine.Random.Range(boundMin.z, boundMax.z)
         );
-        float randomScale = Random.Range(scaleMin, scaleMax);
+        float randomScale = UnityEngine.Random.Range(scaleMin, scaleMax);
 
         Vector3 randomVelocity = new Vector3(
-            Random.Range(-0.1f, 0.1f),
-            Random.Range(-0.1f, 0.1f),
-            Random.Range(-0.1f, 0.1f)
+            UnityEngine.Random.Range(-0.1f, 0.1f),
+            UnityEngine.Random.Range(-0.1f, 0.1f),
+            UnityEngine.Random.Range(-0.1f, 0.1f)
         );
 
         SpawnParticle(randomPos, randomScale, randomVelocity);
@@ -118,5 +124,5 @@ public class ParticleSystem : MonoBehaviour
 
         Particle newParticle = new Particle(newParticleObject.transform, initialVelocity);
         activeParticles.Add(newParticle);
-    }
+    }    
 }
