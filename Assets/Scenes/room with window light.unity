@@ -1205,16 +1205,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b22f9972cc0a364c8f37df6da474b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicallyAccurate: 0
   ParticlePrefab: {fileID: 7414993312220557434, guid: 25835476a94f4ba43b697d09c6a2affd, type: 3}
   boundingBox: {fileID: 655767609}
   scaleMin: 0.05
   scaleMax: 0.05
+  maxVelocity: 1
   addedForce: {x: 0, y: -3, z: 0}
   drag: 0.01
   initialSpawnCount: 200
-  particleDensity: 26
   activeParticles: []
+  windField: {fileID: 0}
 --- !u!1 &317850014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,18 +1301,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightSource: {fileID: 782509203}
   particleSystems:
-  - {fileID: 441294139}
-  - {fileID: 1290476225}
-  - {fileID: 1238341726}
-  - {fileID: 305023488}
+  - {fileID: 1238341727}
   rayCount: 300
-  segmentsPerRay: 10
+  segmentsPerRay: 4
   rayLength: 10
   rayWidth: 0.05
   rayColor: {r: 1, g: 1, b: 0.8, a: 0.5}
   rayIntensity: 0.5
   attenuationFactor: 0
-  scatteringStrength: 10
+  scatteringStrength: 398.6
   interactionRadius: 0.1
   visualizeInteractions: 1
   interactionPrefab: {fileID: 3913043364082924702, guid: 60ddf8665e6b50c44abb1f0b259e6a0e, type: 3}
@@ -1750,7 +1747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &441294138
 Transform:
   m_ObjectHideFlags: 0
@@ -1779,16 +1776,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b22f9972cc0a364c8f37df6da474b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicallyAccurate: 0
   ParticlePrefab: {fileID: 7414993312220557434, guid: fdd202b19ac339e4d833652f6fa5bf22, type: 3}
   boundingBox: {fileID: 2122428570}
   scaleMin: 0.015
   scaleMax: 0.03
+  maxVelocity: 1
   addedForce: {x: 0, y: 0, z: 0}
   drag: 0.01
   initialSpawnCount: 0
-  particleDensity: 2650
   activeParticles: []
+  windField: {fileID: 0}
 --- !u!1001 &475918769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3715,6 +3712,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1238341725}
   - component: {fileID: 1238341726}
+  - component: {fileID: 1238341727}
   m_Layer: 0
   m_Name: BrownDustParticles
   m_TagString: Untagged
@@ -3731,7 +3729,7 @@ Transform:
   m_GameObject: {fileID: 1238341724}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.095178, y: -4.9745593, z: 1.5377898}
+  m_LocalPosition: {x: -8.71, y: -4.9745593, z: 2.2149992}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3745,21 +3743,94 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238341724}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b22f9972cc0a364c8f37df6da474b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicallyAccurate: 0
   ParticlePrefab: {fileID: 7414993312220557434, guid: 7f810e16e0723ae4fa4cd9f5b1774dff, type: 3}
   boundingBox: {fileID: 398431544}
   scaleMin: 0.02
   scaleMax: 0.03
+  maxVelocity: 1
   addedForce: {x: 0, y: -0.005, z: 0}
   drag: 0.01
   initialSpawnCount: 500
-  particleDensity: 2650
   activeParticles: []
+  windField: {fileID: 0}
+--- !u!114 &1238341727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238341724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da49350fa7823f4eafce05397b83d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleMaterial: {fileID: 2100000, guid: 07cc9d6c353f48b489153403acd7a8e3, type: 2}
+  particleMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  renderAsBillboardTexture: 1
+  boundingBox: {fileID: 398431544}
+  spawnCount: 5000
+  scaleMin: 0.02
+  scaleMax: 0.03
+  particleActiveLifetime: 999999
+  maxVelocity: 1
+  drag: 0.01
+  addedForce: {x: 0, y: -0.005, z: 0}
+  windField: {fileID: 1272997002}
+  activeParticles: []
+  settledParticles: []
+--- !u!1 &1272997001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1272997003}
+  - component: {fileID: 1272997002}
+  m_Layer: 0
+  m_Name: WindField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1272997002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272997001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f853ceb1c7e198468a7e04112f232e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseScale: 1
+  noiseSpeed: 0.01
+  strength: 0.1
+--- !u!4 &1272997003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272997001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.035651196, y: 2.8052115, z: -0.8273673}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1290476223
 GameObject:
   m_ObjectHideFlags: 0
@@ -3776,7 +3847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1290476224
 Transform:
   m_ObjectHideFlags: 0
@@ -3786,7 +3857,7 @@ Transform:
   m_GameObject: {fileID: 1290476223}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.095178, y: -4.9745593, z: 1.5377898}
+  m_LocalPosition: {x: -8.71, y: -4.9745593, z: 2.215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3805,16 +3876,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b22f9972cc0a364c8f37df6da474b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicallyAccurate: 0
   ParticlePrefab: {fileID: 7414993312220557434, guid: 06b8e163d3c93ab409ebb7c6bffba353, type: 3}
   boundingBox: {fileID: 985263237}
   scaleMin: 0.03
   scaleMax: 0.06
+  maxVelocity: 1
   addedForce: {x: 0, y: -0.01, z: 0}
   drag: 0.01
   initialSpawnCount: 250
-  particleDensity: 2650
   activeParticles: []
+  windField: {fileID: 0}
 --- !u!1 &1293477408
 GameObject:
   m_ObjectHideFlags: 0
@@ -5286,6 +5357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1940691535}
   - component: {fileID: 1940691536}
+  - component: {fileID: 1940691537}
   m_Layer: 0
   m_Name: CloudDustParticles
   m_TagString: Untagged
@@ -5302,7 +5374,7 @@ Transform:
   m_GameObject: {fileID: 1940691534}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.095178, y: -10, z: -1}
+  m_LocalPosition: {x: -8.71, y: -10, z: -0.3227905}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5316,21 +5388,47 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940691534}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b22f9972cc0a364c8f37df6da474b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicallyAccurate: 0
   ParticlePrefab: {fileID: 7414993312220557434, guid: c2fc44c138717464ea839af61331e950, type: 3}
   boundingBox: {fileID: 1728469748}
   scaleMin: 3
   scaleMax: 5
+  maxVelocity: 1
   addedForce: {x: 0, y: 0.005, z: 0}
   drag: 0.01
   initialSpawnCount: 1000
-  particleDensity: 2650
   activeParticles: []
+  windField: {fileID: 0}
+--- !u!114 &1940691537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940691534}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da49350fa7823f4eafce05397b83d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleMaterial: {fileID: 2100000, guid: 05a0ec9d3b3cbb245814baaf206a954a, type: 2}
+  particleMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  renderAsBillboardTexture: 1
+  boundingBox: {fileID: 1728469748}
+  spawnCount: 1000
+  scaleMin: 3
+  scaleMax: 5
+  particleActiveLifetime: 99999
+  maxVelocity: 1
+  drag: 0.01
+  addedForce: {x: 0, y: -0.01, z: 0}
+  windField: {fileID: 1272997002}
+  activeParticles: []
+  settledParticles: []
 --- !u!1001 &2017063459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5733,3 +5831,5 @@ SceneRoots:
   - {fileID: 1700781794}
   - {fileID: 146418184}
   - {fileID: 219189407}
+  - {fileID: 319494792}
+  - {fileID: 1272997003}

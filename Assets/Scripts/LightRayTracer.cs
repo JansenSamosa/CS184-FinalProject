@@ -7,7 +7,7 @@ public class LightRayTracer : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform lightSource;
-    [SerializeField] private ParticleSystem[] particleSystems;  // Custom ParticleSystem with activeParticles
+    [SerializeField] private ParticleSystemOptimized[] particleSystems;  // Custom ParticleSystem with activeParticles
 
     [Header("Ray Settings")]
     [SerializeField] private int rayCount = 32;
@@ -108,8 +108,8 @@ public class LightRayTracer : MonoBehaviour
             {
                 foreach (var part in ps.activeParticles)
                 {
-                    Vector3 worldPos = part.transform.position;
-                    float size = part.transform.localScale.x;
+                    Vector3 worldPos = part.position;
+                    float size = part.scale.x;
                     float radius = interactionRadius + size * 0.5f;
                     Vector3 closest = ClosestPointOnSegment(pos, nextPos, worldPos);
                     if (Vector3.Distance(closest, worldPos) <= radius)
