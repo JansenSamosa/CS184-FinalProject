@@ -45,9 +45,9 @@ public class ParticleSystemOptimized : MonoBehaviour
     public Vector3 addedForce = new Vector3(0, -0.01f, 0);
     public WindField windField;
 
-    [Header("Particles lists (do not touch—for debugging purposes only)")]
-    [SerializeField] List<ParticleData> activeParticles = new List<ParticleData>();   
-    [SerializeField] List<ParticleData> settledParticles = new List<ParticleData>();
+    [Header("Particles lists (Don't modify: for debugging purposes only)")]
+    public List<ParticleData> activeParticles = new List<ParticleData>();   
+    public List<ParticleData> settledParticles = new List<ParticleData>();
     
     private List<Matrix4x4> settledParticlesTransformations = new List<Matrix4x4>();
 
