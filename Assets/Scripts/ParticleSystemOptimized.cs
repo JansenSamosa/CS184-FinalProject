@@ -66,15 +66,14 @@ public class ParticleSystemOptimized : MonoBehaviour
         // transformation of each particle
         Matrix4x4[] activeParticleTransformations = new Matrix4x4[activeParticles.Count];
         
+        Vector3 camPos = Camera.main.transform.position;
         // UPDATE PARTICLES
         for (int i = 0; i < activeParticles.Count; i++) {
             ParticleData p = activeParticles[i];
             
             // rotate billboard particles towards camera
             if (renderAsBillboardTexture) {
-                Vector3 toCam = p.position - Camera.main.transform.position;
-                Quaternion billRot = Quaternion.LookRotation(toCam);
-                p.rotation = billRot;
+                p.rotation = Quaternion.LookRotation(p.position - camPos);;
             }
             
             // update particle life time
