@@ -16,6 +16,9 @@ using UnityEditor;
 [HelpURL("http://vlights-system.blogspot.com.au/p/documentation_15.html")]
 public partial class VLight : MonoBehaviour
 {
+    //added 
+    public Camera targetCamera;
+    //added end
     const int GRADIENT_SIZE = 128;
 
     public enum VolumeShape
@@ -1008,8 +1011,9 @@ public partial class VLight : MonoBehaviour
         {
             UpdateSettings();
             //added start
+            Camera camToUse = targetCamera != null ? targetCamera : Camera.current;
             //Debug.Log("Rendering from: " + Camera.current.name);
-            if (Camera.current == null) {
+            if (camToUse == null) {
                 Debug.LogWarning("[V-Light] Camera.current is null. Skipping OnWillRenderObject for this frame.");
                 return;
             }
@@ -1019,7 +1023,9 @@ public partial class VLight : MonoBehaviour
                 return;
             }*/
             //added end 
-            UpdateViewMatrices(Camera.current);
+
+            UpdateViewMatrices(camToUse);
+            //UpdateViewMatrices(Camera.current);
             UpdateLightMatrices();
             if(!_renderShadowMapInUpdate)
             {
